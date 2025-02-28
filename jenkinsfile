@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    dockerImage = docker.build("my-django-app")
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    dockerImage.inside {
+                        sh 'pytest'
+                    }
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    dockerImage.push("my-django-app:latest")
+                }
+            }
+        }
+    }
+}

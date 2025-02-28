@@ -1,29 +1,28 @@
-# Utiliser l’image officielle de Python comme image de base
-FROM python:latest
+# Utiliser une image de base Python
+FROM python:3.12-slim
 
-# Définir le répertoire de travail dans le conteneur
-RUN mkdir /app
-
-WORKDIR /app
 
 # Définir les variables d'environnement
-# Empêche Python d'écrire des fichiers pyc sur le disque
-ENV PYTHONDONTWRITEBYTECODE=1
-# Empêche Python de mettre en mémoire tampon stdout et stderr
-ENV PYTHONUNBUFFERED=1 
+ENV PYTHONUNBUFFERED 1
 
-# Copier le fichier requirements dans le conteneur à l'adresse /app
-COPY requirements.txt /app/requirements.txt
+# Créer le répertoire de l'application
+WORKDIR /app
 
-# Installer toutes les dépendances spécifiées dans requirements.txt
+# Copier les dépendances de l'application
+COPY requirements.txt .
+
+# Installer les dépendances de l'application
 RUN pip install --upgrade pip && \
-    pip install -r /app/requirements.txt
+    pip install -r requirements.txt
 
-# Copier le code local dans le conteneur
-COPY . /app/
+# Copier le code source de l'application
+COPY . .
 
-# Exposer le port 8000 pour que Django puisse l'utiliser
+# Use CMD to run the script
+CMD ["bash", "/app/django.sh"]
+
+# Exposer le port 8000
 EXPOSE 8000
 
-# Commande pour exécuter au démarrage du conteneur
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Définir le point d'entrée pour exécuter le script django.sh
+ENTRYPOINT ["/app/django.sh"]
