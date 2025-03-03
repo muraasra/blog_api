@@ -1,29 +1,35 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_IMAGE = 'blog_api'
+        DOCKER_TAG = 'latest'
+    }
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                script {
-                    dockerImage = docker.build("my-django-app")
-                }
-            }
-        }
-        stage('Test') {
-            steps {
-                script {
-                    dockerImage.inside {
-                        sh 'pytest'
-                    }
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    dockerImage.push("my-django-app:latest")
-                }
+                git branch: 'main', url: 'https://github.com/muraasra/blog_api.git'
             }
         }
     }
+    stage('Build Docker Image') {
+            steps {
+                script {
+                    bat """
+                    docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                    """
+                }
+            }
+        }
+        
+        stage('Deploy Locally') {
+            steps {
+                script {
+                    bat """
+                    docker-compose down || exit 0
+                    docker-compose up -d
+                    """
+                }
+    }
+}
 }
