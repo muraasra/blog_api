@@ -1,0 +1,114 @@
+{
+  "info": {
+    "name": "Blog API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Utilisateurs",
+      "item": [
+        {
+          "name": "Créer un utilisateur",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/api/users/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "users", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nom\": \"raoul\",\n    \"email\": \"raoul@example.com\",\n  }"
+            }
+          },
+          "response": [
+            {
+              "status": "201 Created",
+              "body": "{\n  \"id\": 1,\n  \"nom\": \"raoul\",\n  \"email\": \"raoul@example.com\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtenir tous les utilisateurs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8000/api/users/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "users", ""]
+            }
+          },
+          "response": [
+            {
+              "status": "200 OK",
+              "body": "[{\n  \"id\": 1,\n  \"nom\": \"raoul\",\n  \"email\": \"raoul@example.com\"\n}]"
+            }
+          ]
+        },
+        {
+          "name": "Obtenir un utilisateur par ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8000/api/users/{id}/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "users", "{id}", ""]
+            }
+          },
+          "response": [
+            {
+              "status": "200 OK",
+              "body": "{\n  \"id\": 1,\n  \"nom\": \"raoul\",\n  \"email\": \"raoul@example.com\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Créer un article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8000/api/posts/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api", "posts", ""]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"titre\": \"Mon premier article\",\n    \"contenu\": \"Contenu de mon premier article de blog.\",\n    \"author\": 1\n}"
+            }
+          },
+          "response": [
+            {
+              "status": "201 Created",
+              "body": "{\n  \"id\": 1,\n  \"titre\": \"Mon premier article\",\n  \"contenu\": \"Contenu de mon premier article de blog.\",\n  \"author\": \"raoul\",\n  \"date_publication\": \"2024-03-04T12:00:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
